@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserDo">
+    <resultMap id="UserDoMap" type="com.example.security.service.UserDo">
+        <id column="login_name" jdbcType="VARCHAR" property="loginName"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <collection property="roles" ofType="com.example.security.service.RoleDo" >
+            <id column="id" jdbcType="VARCHAR" property="id"/>
+            <result column="authority" jdbcType="VARCHAR" property="authority"/>
+            <result column="login_name1" jdbcType="VARCHAR" property="loginName"/>
+        </collection>
+    </resultMap>
+    <select id="getUserByLoginName" resultMap="UserDoMap">
+        select
+            u.login_name as login_name,u.username as username,u.password as password,
+            r.id as id,r.authority as authority,r.login_name as login_name1
+        from user u left join role r
+        on u.login_name = r.login_name where u.login_name = #{loginName}
+    </select>
+</mapper>
